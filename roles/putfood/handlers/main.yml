@@ -1,0 +1,4 @@
+---
+
+- name: reload profile
+  shell: ". /etc/profile.d/putfood.sh"

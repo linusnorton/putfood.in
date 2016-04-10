@@ -1,0 +1,35 @@
+---
+
+- stat:
+    path: "{{ putfood_api_path }}"
+  register: st
+
+- name: NPM packages install
+  npm:
+    path: "{{ putfood_api_path }}"
+  when: st.stat.isdir is defined and not st.stat.isdir
+
+- name: Create putfood database
+  mysql_db:
+    name: "{{ putfood_database_name }}"
+    state: present
+
+- name: Create environment profile
+  template:
+    src: templates/profile.sh.j2
+    dest: /etc/profile.d/putfood.sh
+  notify:
+    - reload profile
+
+- name: Create server config
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/sites-available/putfood.conf
+
+- name: Create links for sites-enabled
+  file:
+    state: link
+    src: /etc/nginx/sites-available/putfood.conf
+    dest: /etc/nginx/sites-enabled/putfood.conf
+  notify:
+   - reload nginx

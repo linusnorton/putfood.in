@@ -1,0 +1,9 @@
+server {
+    location / {
+        root {{ putfood_www_path }};
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:{{ putfood_api_port }};
+    }
+}

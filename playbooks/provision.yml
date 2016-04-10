@@ -1,0 +1,9 @@
+---
+
+- hosts: dev-app
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: mariadb, tags: mariadb }
+    - { role: node, tags: node }
+    - { role: putfood, tags: putfood }

@@ -1,0 +1,32 @@
+{
+  "name": "putfood.in",
+  "description": "Mealtime Collaboration",
+  "version": "0.0.1",
+  "homepage": "http://putfood.in",
+  "author": {
+    "name": "Linus Norton",
+    "url": "http://github.com/linusnorton"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/linusnorton/putfood.in"
+  },
+  "bugs": {
+    "url": "https://github.com/linusnorton/putfood.in/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 5.0.0"
+  },
+  "scripts": {
+    "test": "",
+    "watch": "./node_modules/.bin/supervisor -w src/ -x ./node_modules/.bin/ts-node src/app.ts"
+  },
+  "dependencies": {
+    "koa": "^2.0.0",
+    "supervisor": "^0.10.0",
+    "ts-node": "^0.7.1"
+  },
+  "devDependencies": {},
+  "peerDependencies": {}
+}
