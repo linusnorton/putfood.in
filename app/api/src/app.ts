@@ -1,6 +1,23 @@
 import * as Koa from 'koa';
+import * as Router from 'koa-router';
+import routes from './config/routes';
 
 const app = new Koa();
+const router = new Router();
 
-console.log("Starting putfood.in app on port " + process.env.API_PORT);
+console.log("\n##############\n# putfood.in #\n##############\n");
+console.log("Routes:\n");
+
+for (let uri in routes) {
+  for (let method in routes[uri]) {
+    console.log(`  ${method.toUpperCase()} ${uri}`);
+    router[method.toLowerCase()](uri, routes[uri][method]);
+  }
+}
+
+app
+  .use(router.routes())
+  .use(router.allowedMethods());
+
+console.log(`\nPort: ${process.env.API_PORT}`);
 app.listen(process.env.API_PORT);

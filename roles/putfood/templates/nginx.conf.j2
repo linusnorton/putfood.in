@@ -4,6 +4,6 @@ server {
     }
 
     location /api/ {
-        proxy_pass http://localhost:{{ putfood_api_port }};
+        proxy_pass http://localhost:{{ putfood_api_port }}/;
     }
 }
