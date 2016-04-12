@@ -5,7 +5,7 @@
   "homepage": "http://putfood.in",
   "author": {
     "name": "Linus Norton",
-    "url": "http://github.com/linusnorton"
+    "url": "http://ljn.io"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
   },
   "scripts": {
     "test": "",
-    "watch": "./node_modules/.bin/supervisor -w src/ -x ./node_modules/.bin/ts-node src/app.ts"
+    "watch": "./node_modules/.bin/supervisor -w src/ -x ./node_modules/.bin/ts-node src/app.ts",
+    "migrate": "./node_modules/.bin/db-migrate --config ./config/database.json up"
   },
   "dependencies": {
     "db-migrate": "^0.10.0-beta.11",
