@@ -1,0 +1,11 @@
+{
+  "defaultEnv": "env",
+  "env": {
+    "driver": "mysql",
+    "user": {"ENV": "DATABASE_USERNAME"},
+    "password": {"ENV": "DATABASE_PASSWORD"},
+    "host": {"ENV": "DATABASE_HOSTNAME"},
+    "database": "putfood",
+    "multipleStatements": true
+  }
+}

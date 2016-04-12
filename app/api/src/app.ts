@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
-import routes from './config/routes';
+import routes from '../config/routes';
 
 const app = new Koa();
 const router = new Router();
