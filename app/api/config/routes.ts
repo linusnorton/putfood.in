@@ -1,7 +1,7 @@
 import UserController from '../src/controller/UserController';
 
 export default {
-  "/user/:id": {
+  "/user/:email": {
     "get": UserController.get
   }
 };

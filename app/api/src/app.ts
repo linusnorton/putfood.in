@@ -1,6 +1,7 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import routes from '../config/routes';
+import DependencyInjection from '../config/dependencies';
 
 const app = new Koa();
 const router = new Router();
@@ -14,6 +15,8 @@ for (let uri in routes) {
     router[method.toLowerCase()](uri, routes[uri][method]);
   }
 }
+
+app.context.di = new DependencyInjection();
 
 app
   .use(router.routes())
