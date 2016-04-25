@@ -16,16 +16,18 @@ export default class UserController {
 
     try {
       await cmd.run(ctx.request.body.email, ctx.request.body.name)
-      ctx.response.code = 201;
+      ctx.response.status = 201;
     }
     catch (e) {
       console.log(e);
 
       if (e instanceof UserAlreadyExistsException) {
-        ctx.response.code = 403;
+        ctx.response.status = 400;
+        ctx.body = { error: "User already exists" };
       }
       else {
-        ctx.response.code = 500;
+        ctx.response.status = 500;
+        ctx.body = { error: "Internal server error" };
       }
     }
 

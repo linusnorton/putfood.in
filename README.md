@@ -5,7 +5,7 @@ Organise your mealtime by emailing household members to get their dinning prefer
 
 ## Requirements
 
-Vagrant, virtualbox and ansible.
+Install vagrant, virtualbox and ansible on whatever OS floats your boat. No judgement.
 
 ## Usage
 
@@ -15,6 +15,8 @@ vagrant ssh
 cd /opt/putfood.in
 npm start
 ```
+
+## Current Status: Not even remotely useful
 
 ## Done
 
@@ -32,3 +34,4 @@ npm start
 - Email election
 - Record votes
 - Create recipe
+- Add recipes to house

@@ -1,6 +1,4 @@
 
-import * as uuid from "node-uuid";
-
 export default class UserRepository {
 
   database: any;
@@ -16,14 +14,9 @@ export default class UserRepository {
    * @return {Promise<Object>}
    */
   async getUser(email: string): Promise<Object> {
-    try {
-      return await this.database.query("SELECT * FROM user WHERE email = ?", [email]);
-    }
-    catch (e) {
-      console.log(e);
+      const user = await this.database.query("SELECT * FROM user WHERE email = ?", [email]);
 
-      return null;
-    }
+      return user.length !== 0 ? user : null;
   }
 
 }

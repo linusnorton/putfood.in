@@ -27,9 +27,10 @@ export default class DependencyContainer {
     },
 
     "user.createUserCommand": async () => {
-      const [db, repo, emailer] = await Promise.all([this.get("database"), this.get("user.repository"), this.get("email.service")]);
+      //const [db, repo, emailer] = ...
+      const args = await Promise.all([this.get("database"), this.get("user.repository"), this.get("email.service")]);
 
-      return new CreateUserCommand(db, repo, emailer);
+      return new CreateUserCommand(args[0], args[1], args[2]);
     },
 
     "email.service": async () => {

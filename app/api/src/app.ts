@@ -10,8 +10,8 @@ const router = new Router();
 console.log("\n##############\n# putfood.in #\n##############\n");
 console.log("Routes:\n");
 
-for (let uri in routes) {
-  for (let method in routes[uri]) {
+for (const uri in routes) {
+  for (const method in routes[uri]) {
     console.log(`  ${method.toUpperCase()} ${uri}`);
     router[method.toLowerCase()](uri, routes[uri][method]);
   }

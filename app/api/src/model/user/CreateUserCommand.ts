@@ -2,6 +2,7 @@
 import * as uuid from "node-uuid";
 import UserRepository from './UserRepository';
 import EmailService from '../email/EmailService';
+import UserAlreadyExistsException from './UserAlreadyExistsException';
 
 export default class CreateUserCommand {
 
@@ -9,15 +10,15 @@ export default class CreateUserCommand {
   emailer: EmailService;
   repository: UserRepository;
 
-  constructor(database, emailer, repository) {
+  constructor(database, repository: UserRepository, emailer: EmailService) {
     this.database = database;
-    this.emailer = emailer;
     this.repository = repository;
+    this.emailer = emailer;
   }
 
   async run(email: string, name: string): Promise<void> {
-    if (await this.repository.getUser(email)) {
-      throw new Error("User already exists");
+    if (null !== await this.repository.getUser(email)) {
+      throw new UserAlreadyExistsException();
     }
 
     const key = uuid.v4();
