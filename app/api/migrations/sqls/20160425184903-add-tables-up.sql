@@ -1,0 +1,59 @@
+CREATE TABLE house (
+  id INT(11) unsigned NOT NULL auto_increment,
+  name VARCHAR(255) NOT NULL,
+  owner VARCHAR(255) NOT NULL,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(id),
+  FOREIGN KEY (owner) REFERENCES user(email)
+);
+
+CREATE TABLE house_member (
+  house INT(11) unsigned NOT NULL,
+  member VARCHAR(255) NOT NULL,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(house, member),
+  FOREIGN KEY (member) REFERENCES user(email),
+  FOREIGN KEY (house) REFERENCES house(id)
+);
+
+CREATE TABLE recipe (
+  id INT(11) unsigned NOT NULL auto_increment,
+  name VARCHAR(255) NOT NULL,
+  text LONGTEXT NOT NULL,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE house_recipe (
+  house INT(11) unsigned NOT NULL,
+  recipe INT(11) unsigned NOT NULL,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(house, recipe),
+  FOREIGN KEY (recipe) REFERENCES recipe(id),
+  FOREIGN KEY (house) REFERENCES house(id)
+);
+
+CREATE TABLE election (
+  id INT(11) unsigned NOT NULL auto_increment,
+  house INT(11) unsigned NOT NULL,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(id),
+  FOREIGN KEY (house) REFERENCES house(id)
+);
+
+CREATE TABLE vote (
+  election INT(11) unsigned NOT NULL,
+  recipe INT(11) unsigned NOT NULL,
+  member VARCHAR(255) NOT NULL,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(election, recipe, member),
+  FOREIGN KEY (member) REFERENCES user(email),
+  FOREIGN KEY (recipe) REFERENCES recipe(id),
+  FOREIGN KEY (election) REFERENCES election(id)
+);

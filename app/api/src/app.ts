@@ -1,8 +1,9 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import routes from '../config/routes';
-import DependencyInjection from '../config/dependencies';
+import DependencyContainer from './model/dependency/DependencyContainer';
 
+const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 const router = new Router();
 
@@ -16,11 +17,13 @@ for (let uri in routes) {
   }
 }
 
-app.context.di = new DependencyInjection();
+app.context.di = new DependencyContainer();
 
 app
+  .use(bodyParser())
   .use(router.routes())
-  .use(router.allowedMethods());
+  .use(router.allowedMethods())
+;
 
 console.log(`\nPort: ${process.env.API_PORT}`);
 app.listen(process.env.API_PORT);

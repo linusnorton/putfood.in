@@ -1,8 +1,11 @@
 {
   "ambientDependencies": {
     "koa": "registry:dt/koa#2.0.0+20160317120654",
-    "koa-bodyparser": "registry:dt/koa-bodyparser#3.0.0+20160322023406",
+    "koa-bodyparser": "registry:dt/koa-bodyparser#3.0.0+20160414124440",
     "koa-router": "registry:dt/koa-router#7.0.0+20160314083221",
     "node": "registry:dt/node#4.0.0+20160330064709"
+  },
+  "dependencies": {
+    "node-uuid": "registry:npm/node-uuid#1.4.0+20160224202522"
   }
 }
