@@ -3,6 +3,9 @@ import CreateUserCommand from '../user/CreateUserCommand';
 import EmailService from '../email/EmailService';
 import AuthRepository from '../auth/AuthRepository';
 
+const nodemailer = require('nodemailer');
+const bluebird = require('bluebird');
+
 export default class DependencyContainer {
 
   deps = {};
@@ -39,7 +42,10 @@ export default class DependencyContainer {
     },
 
     "email.service": async () => {
-      return new EmailService();
+      const options = require("../../../config/email.json");
+      const transport = bluebird.promisifyAll(nodemailer.createTransport(options));
+
+      return new EmailService(transport, options.from);
     },
 
     "auth.repository": async () => {

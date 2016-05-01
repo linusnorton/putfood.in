@@ -46,11 +46,11 @@ export default class AuthRepository {
   createToken(user: string, duration: number = 99999999): string {
     const key = uuid.v4();
     const expiry = Date.now() + duration;
-    
+
     this.database.query("INSERT INTO user_authentication SET ?", {
       user: user,
       token: key,
-      expiry: expiry
+      expiry: new Date(expiry)
     });
 
     return key;
