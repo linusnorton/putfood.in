@@ -35,3 +35,9 @@ npm start
 - Record votes
 - Create recipe
 - Add recipes to house
+
+## User commands I forget
+
+```
+./node_modules/.bin/db-migrate create somethinghere --sql-file --config ./config/database.json 
+```

@@ -19,4 +19,31 @@ export default class UserRepository {
       return user.length !== 0 ? user : null;
   }
 
+  /**
+   * Insert a user into the database
+   *
+   * @param  {string}        email
+   * @param  {string}        name
+   * @return {Promise<void>}
+   */
+  async createUser(email: string, name: string): Promise<void> {
+    return this.database.query("INSERT INTO user SET ?", {
+      email: email,
+      name: name
+    });
+  }
+
+  /**
+   * Update a user
+   *
+   * @param  {string}        email
+   * @param  {Object}        user
+   * @return {Promise<void>}
+   */
+  async updateUser(email: string, user: Object): Promise<void> {
+    return this.database.query("UPDATE user SET ? WHERE email = ?", [user, email]);
+  }
+
+
+
 }

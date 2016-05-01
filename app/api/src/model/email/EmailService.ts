@@ -1,7 +1,13 @@
 
 export default class EmailService {
 
-  send(to: String, subject: String, body: String) {
+  /**
+   * Send a registration email
+   *
+   * @param  {String} to
+   * @param  {Object} context
+   */
+  registration(to: String, context: Object) {
     console.log(arguments);
   }
 

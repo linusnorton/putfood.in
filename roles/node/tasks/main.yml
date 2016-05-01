@@ -7,7 +7,7 @@
 
 - name: Add Node repo
   apt_repository:
-    repo: 'deb https://deb.nodesource.com/node_5.x {{ ansible_distribution_release }} main'
+    repo: 'deb https://deb.nodesource.com/node_6.x {{ ansible_distribution_release }} main'
     state: present
 
 - name: Install Node

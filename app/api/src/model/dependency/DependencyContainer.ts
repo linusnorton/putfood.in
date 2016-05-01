@@ -1,6 +1,7 @@
 import UserRepository from '../user/UserRepository';
 import CreateUserCommand from '../user/CreateUserCommand';
 import EmailService from '../email/EmailService';
+import AuthRepository from '../auth/AuthRepository';
 
 export default class DependencyContainer {
 
@@ -27,18 +28,36 @@ export default class DependencyContainer {
     },
 
     "user.createUserCommand": async () => {
-      //const [db, repo, emailer] = ...
-      const args = await Promise.all([this.get("database"), this.get("user.repository"), this.get("email.service")]);
+      const [db, userRepo, authRepo, emailer] = await Promise.all([
+        this.get("database"),
+        this.get("user.repository"),
+        this.get("auth.repository"),
+        this.get("email.service")
+      ]);
 
-      return new CreateUserCommand(args[0], args[1], args[2]);
+      return new CreateUserCommand(db, userRepo, authRepo, emailer);
     },
 
     "email.service": async () => {
       return new EmailService();
     },
 
+    "auth.repository": async () => {
+      const connection = await this.get("database");
+
+      return new AuthRepository(connection);
+    },
+
   };
 
+  /**
+   * Check the deps object to see if the requested dependency has already been
+   * instantiated. If not create it using the factory method in the builder object
+   * and then return it.
+   *
+   * @param  {string} name
+   * @return {any}
+   */
   get(name: string): any {
     if (typeof this.deps[name] == 'undefined') {
       if (typeof this.builders[name] != 'function') {

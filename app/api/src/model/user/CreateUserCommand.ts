@@ -1,35 +1,35 @@
 
-import * as uuid from "node-uuid";
 import UserRepository from './UserRepository';
 import EmailService from '../email/EmailService';
 import UserAlreadyExistsException from './UserAlreadyExistsException';
+import AuthRepository from '../auth/AuthRepository';
 
 export default class CreateUserCommand {
 
   database: any;
   emailer: EmailService;
-  repository: UserRepository;
+  userRepo: UserRepository;
+  authRepo: AuthRepository;
 
-  constructor(database, repository: UserRepository, emailer: EmailService) {
+  constructor(database, userRepo: UserRepository, authRepo: AuthRepository, emailer: EmailService) {
     this.database = database;
-    this.repository = repository;
+    this.userRepo = userRepo;
+    this.authRepo = authRepo;
     this.emailer = emailer;
   }
 
   async run(email: string, name: string): Promise<void> {
-    if (null !== await this.repository.getUser(email)) {
+    if (null !== await this.userRepo.getUser(email)) {
       throw new UserAlreadyExistsException();
     }
 
-    const key = uuid.v4();
+    this.userRepo.createUser(email, name);
+    const key = this.authRepo.createToken(email);
 
-    this.database.query("INSERT INTO user SET ?", {
-      email: email,
+    this.emailer.registration(email, {
       name: name,
       key: key
     });
-
-    this.emailer.send(email, "Welcome", `Your key is ${key}`);
   }
 
 }
