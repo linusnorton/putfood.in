@@ -1,5 +1,7 @@
 import UserRepository from '../user/UserRepository';
+import VotingRepository from '../voting/VotingRepository';
 import CreateUserCommand from '../user/CreateUserCommand';
+import InviteUserCommand from '../user/InviteUserCommand';
 import EmailService from '../email/EmailService';
 import AuthRepository from '../auth/AuthRepository';
 
@@ -41,6 +43,18 @@ export default class DependencyContainer {
       return new CreateUserCommand(db, userRepo, authRepo, emailer);
     },
 
+    "user.inviteUserCommand": async () => {
+      const [db, userRepo, authRepo, votingRepo, emailer] = await Promise.all([
+        this.get("database"),
+        this.get("user.repository"),
+        this.get("auth.repository"),
+        this.get("voting.repository"),
+        this.get("email.service")
+      ]);
+
+      return new InviteUserCommand(db, userRepo, authRepo, votingRepo, emailer);
+    },
+
     "email.service": async () => {
       const options = require("../../../config/email.json");
       const transport = bluebird.promisifyAll(nodemailer.createTransport(options));
@@ -52,6 +66,12 @@ export default class DependencyContainer {
       const connection = await this.get("database");
 
       return new AuthRepository(connection);
+    },
+
+    "voting.repository": async () => {
+      const connection = await this.get("database");
+
+      return new VotingRepository(connection);
     },
 
   };

@@ -24,20 +24,14 @@
 - name: Create server config
   template:
     src: templates/nginx.conf.j2
-    dest: /etc/nginx/sites-available/putfood.conf
+    dest: /etc/nginx/conf.d/putfood.conf
+  notify:
+   - reload nginx
 
-- name: Create links for sites-enabled
+- name: Remove default site
   file:
     state: absent
-    path: /etc/nginx/sites-enabled/default.conf
+    path: /etc/nginx/conf.d/default.conf
   notify:
    - reload nginx
 
-
-- name: Create links for sites-enabled
-  file:
-    state: link
-    src: /etc/nginx/sites-available/putfood.conf
-    dest: /etc/nginx/sites-enabled/putfood.conf
-  notify:
-   - reload nginx

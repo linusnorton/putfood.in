@@ -1,7 +1,7 @@
 
 import UserRepository from '../user/UserRepository';
 import AuthRepository from './AuthRepository';
-import UserNotFoundException from './UserNotFoundException';
+import UserNotFoundException from '../user/UserNotFoundException';
 import IncorrectPasswordException from './IncorrectPasswordException';
 import Hash from './Hash';
 

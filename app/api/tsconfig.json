@@ -2,7 +2,7 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "noImplicitReturns": true,
-    "target": "ES6"
+    "target": "es6"
   },
   "files": [
     "src/app.ts",

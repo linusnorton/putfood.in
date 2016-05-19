@@ -1,4 +1,9 @@
 
+class User {
+  email: string;
+  password: string;
+}
+
 export default class UserRepository {
 
   database: any;
@@ -11,9 +16,9 @@ export default class UserRepository {
    * Look up a user by email address
    *
    * @param  {string} email
-   * @return {Promise<Object>}
+   * @return {Promise<User>}
    */
-  async getUser(email: string): Promise<Object> {
+  async getUser(email: string): Promise<User> {
       const user = await this.database.query("SELECT * FROM user WHERE email = ?", [email]);
 
       return user.length !== 0 ? user : null;
@@ -26,7 +31,7 @@ export default class UserRepository {
    * @param  {string}        name
    * @return {Promise<void>}
    */
-  async createUser(email: string, name: string): Promise<void> {
+  async createUser(email: string, name: string = null): Promise<void> {
     return this.database.query("INSERT INTO user SET ?", {
       email: email,
       name: name
@@ -43,7 +48,6 @@ export default class UserRepository {
   async updateUser(email: string, user: Object): Promise<void> {
     return this.database.query("UPDATE user SET ? WHERE email = ?", [user, email]);
   }
-
 
 
 }

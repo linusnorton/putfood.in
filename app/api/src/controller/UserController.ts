@@ -1,5 +1,6 @@
 
 import UserRepository from '../model/user/UserRepository';
+import VotingRepository from '../model/voting/VotingRepository';
 import CreateUserCommand from '../model/user/CreateUserCommand';
 import UserAlreadyExistsException from '../model/user/UserAlreadyExistsException';
 import AuthRepository from '../model/auth/AuthRepository';
@@ -53,7 +54,6 @@ export default class UserController {
         ctx.body = { error: "Internal server error" };
       }
     }
-
   }
 
   /**
@@ -88,5 +88,61 @@ export default class UserController {
       ctx.body = { error: "Invalid token" };
     }
   }
-
+  
+  /**
+   * POST /user/:email/house
+   *
+   * @param  {any}      ctx
+   * @param  {Function} next
+   * @return {void}
+   */
+  static async invite(ctx: any, next: () => any) {
+    const [cmd, authRepo, votingRepo, userRepo] = await Promise.all([
+      ctx.app.context.di.get('user.inviteUserCommand'),
+      ctx.app.context.di.get('auth.repository'),
+      ctx.app.context.di.get('voting.repository'),
+      ctx.app.context.di.get('user.repository')
+    ]);
+    
+    const token = ctx.request.header['x-auth-token'];
+    const from = ctx.request.body.from;
+    
+    if (await authRepo.isTokenValid(token, from)) {
+      try {
+        const [house, fromUser] = await Promise.all([
+          votingRepo.getHouse(ctx.request.body.house),
+          userRepo.getUser(ctx.request.body.from)
+        ]);
+      
+        await cmd.run(ctx.request.body.user, house, from);
+        ctx.response.status = 201;
+      }
+      catch (e) {
+        ctx.response.status = 400;
+        ctx.response.body = { error: e };        
+      }
+    }
+  }
+  
+  /**
+   * DELETE /user/:email/house/:houseid
+   *
+   * @param  {any}      ctx
+   * @param  {Function} next
+   * @return {void}
+   */
+  static async uninvite(ctx: any, next: () => any) {
+    const repository: VotingRepository = await ctx.app.context.di.get('voting.repository');
+    const house: number = ctx.params.houseid;
+    const member: string = ctx.params.email;
+    
+    if (!house || !member) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "A house must have an owner and a name" };
+    }
+    else {
+      repository.removeHouseMemebership(house, member);
+      ctx.response.status = 204;
+    }
+  }
 }
